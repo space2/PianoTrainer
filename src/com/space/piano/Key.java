@@ -72,4 +72,8 @@ public class Key {
         mPressed = b;
     }
 
+    public boolean isPressed() {
+        return mPressed;
+    }
+
 }

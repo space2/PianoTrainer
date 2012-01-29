@@ -43,6 +43,8 @@ public class Keyboard extends JComponent {
         mWin = mainWindow;
 
         enableEvents(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.KEY_EVENT_MASK);
+        setFocusable(true);
+        requestFocus();
 
         // Count white keys
         for (Key k : KEYS) {
@@ -92,8 +94,29 @@ public class Keyboard extends JComponent {
 
     @Override
     protected void processKeyEvent(KeyEvent e) {
-        System.out.println(e);
-        super.processKeyEvent(e);
+        Key key = findKey(e.getKeyChar());
+        if (key != null) {
+            if (e.getID() == KeyEvent.KEY_PRESSED && !key.isPressed()) {
+                mApp.play(key.getNote(), true);
+                key.setPressed(true);
+                repaint();
+            } else if (e.getID() == KeyEvent.KEY_RELEASED) {
+                mApp.play(key.getNote(), false);
+                key.setPressed(false);
+                repaint();
+            }
+        }
+        e.consume();
+    }
+
+    private Key findKey(char keyChar) {
+        keyChar = Character.toUpperCase(keyChar);
+        for (Key key : KEYS) {
+            if (key.getLabel() == keyChar) {
+                return key;
+            }
+        }
+        return null;
     }
 
     @Override
