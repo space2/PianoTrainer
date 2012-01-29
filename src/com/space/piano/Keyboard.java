@@ -102,9 +102,11 @@ public class Keyboard extends JComponent {
             Key key = findKey(e.getX(), e.getY());
             if (key != null) {
                 if (e.getID() == MouseEvent.MOUSE_PRESSED) {
+                    mApp.play(key.getNote(), true);
                     key.setPressed(true);
                     repaint();
                 } else if (e.getID() == MouseEvent.MOUSE_RELEASED) {
+                    mApp.play(key.getNote(), false);
                     key.setPressed(false);
                     repaint();
                 }
