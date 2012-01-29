@@ -1,7 +1,10 @@
 package com.space.piano;
 
+import java.awt.AWTEvent;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
 
@@ -38,6 +41,8 @@ public class Keyboard extends JComponent {
     public Keyboard(App app, MainWindow mainWindow) {
         mApp = app;
         mWin = mainWindow;
+
+        enableEvents(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.KEY_EVENT_MASK);
 
         // Count white keys
         for (Key k : KEYS) {
@@ -83,6 +88,43 @@ public class Keyboard extends JComponent {
                 k.setBounds(x1 - bw, 0, x1 + bw, h / 2);
             }
         }
+    }
+
+    @Override
+    protected void processKeyEvent(KeyEvent e) {
+        System.out.println(e);
+        super.processKeyEvent(e);
+    }
+
+    @Override
+    protected void processMouseEvent(MouseEvent e) {
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            Key key = findKey(e.getX(), e.getY());
+            if (key != null) {
+                if (e.getID() == MouseEvent.MOUSE_PRESSED) {
+                    key.setPressed(true);
+                    repaint();
+                } else if (e.getID() == MouseEvent.MOUSE_RELEASED) {
+                    key.setPressed(false);
+                    repaint();
+                }
+            }
+            e.consume();
+        }
+    }
+
+    private Key findKey(int x, int y) {
+        for (Key k : KEYS) {
+            if (!k.isWhite() && k.isInside(x, y)) {
+                return k;
+            }
+        }
+        for (Key k : KEYS) {
+            if (k.isWhite() && k.isInside(x, y)) {
+                return k;
+            }
+        }
+        return null;
     }
 
 }

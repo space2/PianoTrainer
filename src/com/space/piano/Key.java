@@ -17,6 +17,8 @@ public class Key {
     private int mX2;
     private int mY2;
 
+    private boolean mPressed;
+
     public Key(int midiNote, boolean white, char label) {
         mNote = midiNote;
         mWhite = white;
@@ -45,12 +47,12 @@ public class Key {
 
     public void paint(Graphics g) {
         if (mWhite) {
-            g.setColor(Color.WHITE);
+            g.setColor(mPressed ? Color.LIGHT_GRAY : Color.WHITE);
             g.fillRect(mX1, mY1, mX2 - mX1, mY2 - mY1);
             g.setColor(Color.BLACK);
             g.drawRect(mX1, mY1, mX2 - mX1 - 1, mY2 - mY1 - 1);
         } else {
-            g.setColor(Color.BLACK);
+            g.setColor(mPressed ? Color.DARK_GRAY : Color.BLACK);
             g.fillRect(mX1, mY1, mX2 - mX1, mY2 - mY1);
             g.setColor(Color.WHITE);
         }
@@ -60,6 +62,14 @@ public class Key {
         FontMetrics fm = g.getFontMetrics();
         int w = fm.stringWidth(s);
         g.drawString(s, mX1 + (mX2 - mX1 - w) / 2, mY2 - 5 - fm.getDescent());
+    }
+
+    public boolean isInside(int x, int y) {
+        return (x >= mX1 && x < mX2 && y >= mY1 && y < mY2);
+    }
+
+    public void setPressed(boolean b) {
+        mPressed = b;
     }
 
 }
