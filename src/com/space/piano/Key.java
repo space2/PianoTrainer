@@ -1,9 +1,13 @@
 package com.space.piano;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 
 public class Key {
+
+    private static final Font FONT = new Font(Font.SANS_SERIF, Font.BOLD, 32);
 
     private int mNote;
     private boolean mWhite;
@@ -51,6 +55,11 @@ public class Key {
             g.setColor(Color.WHITE);
         }
 
+        g.setFont(FONT);
+        String s = Character.toString(mLabel);
+        FontMetrics fm = g.getFontMetrics();
+        int w = fm.stringWidth(s);
+        g.drawString(s, mX1 + (mX2 - mX1 - w) / 2, mY2 - 5 - fm.getDescent());
     }
 
 }
