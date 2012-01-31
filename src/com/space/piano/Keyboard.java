@@ -35,12 +35,10 @@ public class Keyboard extends JComponent {
     };
 
     private App mApp;
-    private MainWindow mWin;
     private int mCols;
 
     public Keyboard(App app, MainWindow mainWindow) {
         mApp = app;
-        mWin = mainWindow;
 
         enableEvents(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.KEY_EVENT_MASK);
         setFocusable(true);
@@ -74,7 +72,7 @@ public class Keyboard extends JComponent {
         }
     }
 
-    private void calcKeyPos() {
+    public void calcKeyPos() {
         // Calculate position
         int w = getWidth();
         int h = getHeight();
@@ -146,6 +144,23 @@ public class Keyboard extends JComponent {
         }
         for (Key k : KEYS) {
             if (k.isWhite() && k.isInside(x, y)) {
+                return k;
+            }
+        }
+        return null;
+    }
+
+    public int getFirstNote() {
+        return KEYS[0].getNote();
+    }
+
+    public int getLastNote() {
+        return KEYS[KEYS.length - 1].getNote();
+    }
+
+    public Key findKeyByNote(int n) {
+        for (Key k : KEYS) {
+            if (k.getNote() == n) {
                 return k;
             }
         }

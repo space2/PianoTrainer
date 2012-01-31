@@ -11,6 +11,7 @@ public class MainWindow extends JFrame {
 
     private App mApp;
     private Keyboard mKeyb;
+    private SongView mSongView;
 
     public MainWindow(App app) {
         super("Piano");
@@ -22,8 +23,16 @@ public class MainWindow extends JFrame {
         root.add(mKeyb, BorderLayout.SOUTH);
         mKeyb.setPreferredSize(new Dimension(0, 240));
 
+        mSongView = new NotesView(mApp, this);
+        mSongView.setKeyboard(mKeyb);
+        root.add(mSongView, BorderLayout.CENTER);
+
         setSize(1024, 768);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+
+    public void setSong(Song song) {
+        mSongView.setSong(song);
     }
 }

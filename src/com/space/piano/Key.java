@@ -76,4 +76,12 @@ public class Key {
         return mPressed;
     }
 
+    public int getX1() {
+        return mX1;
+    }
+
+    public int getX2() {
+        return mX2;
+    }
+
 }
