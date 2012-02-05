@@ -12,6 +12,19 @@ import javax.swing.JComponent;
 public class Keyboard extends JComponent {
 
     private static final Key KEYS[] = {
+        new Key(40, true, (char)0),
+        new Key(41, true, (char)0),
+            new Key(42, false, (char)0),
+        new Key(43, true, (char)0),
+            new Key(44, false, (char)0),
+        new Key(45, true, (char)0),
+            new Key(46, false, (char)0),
+        new Key(47, true, (char)0),
+        new Key(48, true, (char)0),
+            new Key(49, false, (char)0),
+        new Key(50, true, (char)0),
+            new Key(51, false, (char)0),
+        new Key(52, true, (char)0),
         new Key(53, true, 'A'),
             new Key(54, false, 'W'),
         new Key(55, true, 'S'),
