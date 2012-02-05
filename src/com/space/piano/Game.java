@@ -6,6 +6,7 @@ public class Game implements Runnable {
     private App mApp;
     private boolean mRunning;
     private Thread mThread;
+    private int mScore;
 
     public Game(App app) {
         mApp = app;
@@ -20,6 +21,7 @@ public class Game implements Runnable {
     }
 
     public void start() {
+        setScore(mScore);
         mRunning = true;
         mThread = new Thread(this);
         mThread.start();
@@ -49,6 +51,16 @@ public class Game implements Runnable {
 
     public void onKey(int note, boolean on) {
         // NOP
+    }
+
+    private void setScore(int score) {
+        mScore = score;
+        getApp().setScore(score);
+    }
+
+    protected void addScore(int score) {
+        System.out.println("+ " + score);
+        setScore(mScore + score);
     }
 
 }

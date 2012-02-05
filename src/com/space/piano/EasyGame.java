@@ -32,13 +32,17 @@ public class EasyGame extends Game {
     }
 
     private void resumeTime() {
+        long now = System.currentTimeMillis();
+        int delay = (int) (now - mLastPausedAt) / 100;
+        addScore(delay);
         mTimeRunning = true;
-        mLastPausedAt = System.currentTimeMillis();
+        mLastPausedAt = now;
     }
 
     private void pauseTime() {
         mTimeRunning = false;
         mRefTime += (int) ((System.currentTimeMillis() - mLastPausedAt) * mSpeed);
+        mLastPausedAt = System.currentTimeMillis();
     }
 
     @Override
@@ -48,6 +52,7 @@ public class EasyGame extends Game {
             mTime = (int) ((System.currentTimeMillis() - mLastPausedAt) * mSpeed) + mRefTime;
             SongView songView = getApp().getSongView();
             songView.setTime(mTime);
+            cleanupQueue(mTime);
             synchronized (mWaitingFor) {
                 songView.getNewNoteEvents(mWaitingFor);
                 filterEvents(mWaitingFor);
@@ -107,6 +112,11 @@ public class EasyGame extends Game {
         if (mTimeRunning) {
             now += (int) ((System.currentTimeMillis() - mLastPausedAt) * mSpeed);
         }
+        cleanupQueue(now);
+        mQueue.add(new NoteEvent(note, now, on));
+    }
+
+    private void cleanupQueue(int now) {
         while (mQueue.size() > 0) {
             NoteEvent ev = mQueue.get(0);
             if (now - ev.getTime() > QUEUE_LEN_IN_MS) {
@@ -115,7 +125,6 @@ public class EasyGame extends Game {
                 break;
             }
         }
-        mQueue.add(new NoteEvent(note, now, on));
     }
 
 }

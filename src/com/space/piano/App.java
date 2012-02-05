@@ -60,4 +60,8 @@ public class App {
         return mWin.getKeyboard().isKeyVisible(midiNote);
     }
 
+    public void setScore(int score) {
+        mWin.setScore(score);
+    }
+
 }
