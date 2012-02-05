@@ -26,6 +26,8 @@ public class EasyGame extends Game {
         mRefTime = -5*1000;
         mLastPausedAt = System.currentTimeMillis();
         mTimeRunning = true;
+        mWaitingFor.clear();
+        mQueue.clear();
     }
 
     private void resumeTime() {
