@@ -21,16 +21,11 @@ public class EasyGame extends Game {
     }
 
     @Override
-    public void start() {
-        super.start();
+    public void reset() {
+        super.reset();
         mRefTime = -5*1000;
         mLastPausedAt = System.currentTimeMillis();
         mTimeRunning = true;
-    }
-
-    @Override
-    public void stop() {
-        super.stop();
     }
 
     private void resumeTime() {

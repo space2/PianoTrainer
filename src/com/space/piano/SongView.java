@@ -73,4 +73,8 @@ public class SongView extends JComponent {
         }
     }
 
+    public void restart() {
+        mEventIdx = 0;
+    }
+
 }

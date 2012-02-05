@@ -21,6 +21,7 @@ public class Game implements Runnable {
     }
 
     public void start() {
+        reset();
         setScore(mScore);
         mRunning = true;
         mThread = new Thread(this);
@@ -61,6 +62,16 @@ public class Game implements Runnable {
     protected void addScore(int score) {
         System.out.println("+ " + score);
         setScore(mScore + score);
+    }
+
+    public void restart() {
+        mScore = 0;
+        mApp.getSongView().restart();
+        reset();
+    }
+
+    protected void reset() {
+        // NOP
     }
 
 }

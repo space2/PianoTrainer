@@ -64,4 +64,8 @@ public class App {
         mWin.setScore(score);
     }
 
+    public void restart() {
+        mGame.restart();
+    }
+
 }
