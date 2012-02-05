@@ -13,7 +13,12 @@ import javax.sound.midi.Track;
 
 public class Song {
 
+    private static final int MIN_NOTE_GAP = 100; // min 100ms delay between notes
+
+    private static final int MIN_NOTE_LEN = 100; // min 100ms duration for a note
+
     private Vector<Note> mNotes = new Vector<Note>();
+    private HashMap<Integer, Vector<Note>> mNotesPerNote = new HashMap<Integer, Vector<Note>>();
     private int mLength;
 
     public Song(Sequence seq) {
@@ -44,12 +49,38 @@ public class Song {
                             Note note = new Note(midiNote, tm, tm);
                             notesOn.put(midiNote, note);
                             mNotes.add(note);
+                            Vector<Note> tmp = mNotesPerNote.get(midiNote);
+                            if (tmp == null) {
+                                tmp = new Vector<Note>();
+                                mNotesPerNote.put(midiNote, tmp);
+                            }
+                            tmp.add(note);
                         }
                     }
                 }
             }
         }
         sort();
+
+        // Adjust node boundaries, so there will be a bit of gap between notes
+        for (Vector<Note> notes : mNotesPerNote.values()) {
+            int size = notes.size();
+            for (int i = 0; i < size - 1; i++) {
+                Note cur = notes.get(i);
+                Note next = notes.get(i + 1);
+                int delta = next.getOnTime() - cur.getOffTime();
+                if (delta < MIN_NOTE_GAP) {
+                    delta = MIN_NOTE_GAP;
+                    int offTime = next.getOnTime() - delta;
+                    int noteLen = offTime - cur.getOnTime();
+                    if (noteLen < MIN_NOTE_LEN) {
+                        cur.setOffTime((cur.getOnTime() + next.getOnTime()) / 2);
+                    } else {
+                        cur.setOffTime(offTime);
+                    }
+                }
+            }
+        }
     }
 
     public int getLengthMs() {
