@@ -28,12 +28,6 @@ public class App {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        try {
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     public void play(int note, boolean on) {
