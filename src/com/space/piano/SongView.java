@@ -1,5 +1,7 @@
 package com.space.piano;
 
+import java.util.Vector;
+
 import javax.swing.JComponent;
 
 @SuppressWarnings("serial")
@@ -10,6 +12,7 @@ public class SongView extends JComponent {
     private Song mSong;
     private int mTime;
     private Keyboard mKeyb;
+    private int mEventIdx = 0;
 
     public SongView(App app, MainWindow win) {
         mApp = app;
@@ -35,6 +38,7 @@ public class SongView extends JComponent {
 
     public void setTime(int time) {
         mTime = time;
+        repaint();
     }
 
     public int getTime() {
@@ -55,6 +59,18 @@ public class SongView extends JComponent {
 
     public Keyboard getKeyboard() {
         return mKeyb;
+    }
+
+    public void getNewNoteEvents(Vector<NoteEvent> vec) {
+        while (mEventIdx < mSong.getNoteEventCount()) {
+            NoteEvent ev = mSong.getNoteEvent(mEventIdx);
+            if (ev.getTime() <= mTime) {
+                mEventIdx++;
+                vec.add(ev);
+            } else {
+                break;
+            }
+        }
     }
 
 }

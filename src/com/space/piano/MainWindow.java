@@ -35,4 +35,8 @@ public class MainWindow extends JFrame {
     public void setSong(Song song) {
         mSongView.setSong(song);
     }
+
+    public SongView getSongView() {
+        return mSongView;
+    }
 }

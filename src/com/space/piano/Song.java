@@ -18,6 +18,7 @@ public class Song {
     private static final int MIN_NOTE_LEN = 100; // min 100ms duration for a note
 
     private Vector<Note> mNotes = new Vector<Note>();
+    private Vector<NoteEvent> mNoteEvents = new Vector<NoteEvent>();
     private HashMap<Integer, Vector<Note>> mNotesPerNote = new HashMap<Integer, Vector<Note>>();
     private int mLength;
 
@@ -60,6 +61,14 @@ public class Song {
                 }
             }
         }
+
+        // Create note events
+        for (Note note : mNotes) {
+            mNoteEvents.add(new NoteEvent(note, note.getOnTime(), true));
+            mNoteEvents.add(new NoteEvent(note, note.getOffTime(), false));
+        }
+
+        // Sort the data
         sort();
 
         // Adjust node boundaries, so there will be a bit of gap between notes
@@ -81,6 +90,7 @@ public class Song {
                 }
             }
         }
+
     }
 
     public int getLengthMs() {
@@ -108,6 +118,26 @@ public class Song {
                 return 0;
             }
         });
+        Collections.sort(mNoteEvents, new Comparator<NoteEvent>() {
+            @Override
+            public int compare(NoteEvent o1, NoteEvent o2) {
+                if (o1.getTime() < o2.getTime()) {
+                    return -1;
+                }
+                if (o1.getTime() > o2.getTime()) {
+                    return +1;
+                }
+                return 0;
+            }
+        });
+    }
+
+    public int getNoteEventCount() {
+        return mNoteEvents.size();
+    }
+
+    public NoteEvent getNoteEvent(int idx) {
+        return mNoteEvents.get(idx);
     }
 
 }

@@ -12,6 +12,7 @@ public class App {
     private Synthesizer mSynth;
     private ShortMessage mMsg;
     private Receiver mSynthRcvr;
+    private Game mGame;
 
     public App(String[] args) {
         mWin = new MainWindow(this);
@@ -25,6 +26,9 @@ public class App {
             Sequence seq = MidiSystem.getSequence(getClass().getResourceAsStream("/JingleBells.mid"));
             Song song = new Song(seq);
             mWin.setSong(song);
+
+            mGame = new EasyGame(this);
+            mGame.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -41,6 +45,10 @@ public class App {
 
     public void run() {
         mWin.setVisible(true);
+    }
+
+    public SongView getSongView() {
+        return mWin.getSongView();
     }
 
 }
