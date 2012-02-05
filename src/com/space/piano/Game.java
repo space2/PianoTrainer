@@ -47,4 +47,8 @@ public class Game implements Runnable {
         // NOP
     }
 
+    public void onKey(int note, boolean on) {
+        // NOP
+    }
+
 }

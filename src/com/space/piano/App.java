@@ -34,6 +34,11 @@ public class App {
         }
     }
 
+    public void onKey(int note, boolean on) {
+        play(note, on);
+        mGame.onKey(note, on);
+    }
+
     public void play(int note, boolean on) {
         try {
             mMsg.setMessage(on ? ShortMessage.NOTE_ON : ShortMessage.NOTE_OFF, 0, note, 93);
@@ -49,6 +54,10 @@ public class App {
 
     public SongView getSongView() {
         return mWin.getSongView();
+    }
+
+    public boolean isKeyVisible(int midiNote) {
+        return mWin.getKeyboard().isKeyVisible(midiNote);
     }
 
 }

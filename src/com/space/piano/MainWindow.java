@@ -39,4 +39,8 @@ public class MainWindow extends JFrame {
     public SongView getSongView() {
         return mSongView;
     }
+
+    public Keyboard getKeyboard() {
+        return mKeyb;
+    }
 }

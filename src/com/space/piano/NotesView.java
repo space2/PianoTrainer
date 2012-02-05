@@ -41,10 +41,10 @@ public class NotesView extends SongView {
         float scale = 0.1f;
         for (int i = 0; i < getSong().getCount(); i++) {
             Note note = getSong().getNote(i);
-            if (note.getNote() >= fn && note.getNote() <= ln) {
+            if (note.getMidiNote() >= fn && note.getMidiNote() <= ln) {
                 int y1 = (int) ((note.getOnTime() - getTime()) * scale);
                 int y2 = (int) ((note.getOffTime() - getTime()) * scale);
-                Key key = keyb.findKeyByNote(note.getNote());
+                Key key = keyb.findKeyByNote(note.getMidiNote());
                 int nx1 = key.getX1();
                 int nx2 = key.getX2();
                 g.setPaint(new GradientPaint(

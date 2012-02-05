@@ -2,18 +2,18 @@ package com.space.piano;
 
 public class NoteEvent {
 
-    private Note mNote;
+    private int mMidiNote;
     private boolean mOn;
     private int mTime;
 
-    public NoteEvent(Note note, int time, boolean on) {
-        mNote = note;
+    public NoteEvent(int midiNote, int time, boolean on) {
+        mMidiNote = midiNote;
         mTime = time;
         mOn = on;
     }
 
-    public Note getNote() {
-        return mNote;
+    public int getMidiNote() {
+        return mMidiNote;
     }
 
     public int getTime() {

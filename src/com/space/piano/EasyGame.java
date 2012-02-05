@@ -45,13 +45,43 @@ public class EasyGame extends Game {
             mTime = (int) ((System.currentTimeMillis() - mLastPausedAt) * mSpeed) + mRefTime;
             SongView songView = getApp().getSongView();
             songView.setTime(mTime);
-            songView.getNewNoteEvents(mWaitingFor);
-            if (mWaitingFor.size() > 0) {
-                pauseTime();
+            synchronized (mWaitingFor) {
+                songView.getNewNoteEvents(mWaitingFor);
+                filterEvents(mWaitingFor);
+                if (mWaitingFor.size() > 0) {
+                    pauseTime();
+                }
             }
         } else {
-            if (mWaitingFor.size() == 0) {
-                resumeTime();
+            synchronized (mWaitingFor) {
+                if (mWaitingFor.size() == 0) {
+                    resumeTime();
+                }
+            }
+        }
+    }
+
+    private void filterEvents(Vector<NoteEvent> vec) {
+        int cnt = vec.size();
+        for (int i = cnt - 1; i >= 0; i--) {
+            NoteEvent ev = vec.get(i);
+            if (!getApp().isKeyVisible(ev.getMidiNote())) {
+                getApp().play(ev.getMidiNote(), ev.isOn());
+                vec.remove(i);
+            } else if (ev.isOn() == false) {
+                vec.remove(i);
+            }
+        }
+    }
+
+    public void onKey(int note, boolean on) {
+        synchronized (mWaitingFor) {
+            int cnt = mWaitingFor.size();
+            for (int i = cnt - 1; i >= 0; i--) {
+                NoteEvent ev = mWaitingFor.get(i);
+                if (ev.getMidiNote() == note && ev.isOn() == on) {
+                    mWaitingFor.remove(i);
+                }
             }
         }
     }

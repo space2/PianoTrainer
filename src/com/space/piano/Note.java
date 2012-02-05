@@ -12,7 +12,7 @@ public class Note {
         mOff = off;
     }
 
-    public int getNote() {
+    public int getMidiNote() {
         return mNote;
     }
 

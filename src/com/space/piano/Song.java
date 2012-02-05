@@ -64,8 +64,8 @@ public class Song {
 
         // Create note events
         for (Note note : mNotes) {
-            mNoteEvents.add(new NoteEvent(note, note.getOnTime(), true));
-            mNoteEvents.add(new NoteEvent(note, note.getOffTime(), false));
+            mNoteEvents.add(new NoteEvent(note.getMidiNote(), note.getOnTime(), true));
+            mNoteEvents.add(new NoteEvent(note.getMidiNote(), note.getOffTime(), false));
         }
 
         // Sort the data
