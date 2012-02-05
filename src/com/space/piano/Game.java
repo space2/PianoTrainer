@@ -59,7 +59,6 @@ public class Game implements Runnable {
     }
 
     protected void addScore(int score) {
-        System.out.println("+ " + score);
         setScore(mScore + score);
     }
 
