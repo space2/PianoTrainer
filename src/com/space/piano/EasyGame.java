@@ -6,6 +6,8 @@ public class EasyGame extends Game {
 
     private static final int QUEUE_LEN_IN_MS = 200; // 200ms
 
+    private static final int SCORE_FOR_BAD_KEY = 10;
+
     private int mTime;
     private int mRefTime;
     private long mLastPausedAt;
@@ -121,6 +123,10 @@ public class EasyGame extends Game {
             NoteEvent ev = mQueue.get(0);
             if (now - ev.getTime() > QUEUE_LEN_IN_MS) {
                 mQueue.remove(0);
+                // Add score as well for wrong keys
+                if (ev.isOn()) {
+                    addScore(SCORE_FOR_BAD_KEY);
+                }
             } else {
                 break;
             }
