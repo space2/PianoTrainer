@@ -109,12 +109,8 @@ public class Keyboard extends JComponent {
         if (key != null) {
             if (e.getID() == KeyEvent.KEY_PRESSED && !key.isPressed()) {
                 mApp.onKey(key.getNote(), true);
-                key.setPressed(true);
-                repaint();
             } else if (e.getID() == KeyEvent.KEY_RELEASED) {
                 mApp.onKey(key.getNote(), false);
-                key.setPressed(false);
-                repaint();
             }
         }
         e.consume();
@@ -137,12 +133,8 @@ public class Keyboard extends JComponent {
             if (key != null) {
                 if (e.getID() == MouseEvent.MOUSE_PRESSED) {
                     mApp.onKey(key.getNote(), true);
-                    key.setPressed(true);
-                    repaint();
                 } else if (e.getID() == MouseEvent.MOUSE_RELEASED) {
                     mApp.onKey(key.getNote(), false);
-                    key.setPressed(false);
-                    repaint();
                 }
             }
             e.consume();
@@ -182,6 +174,14 @@ public class Keyboard extends JComponent {
 
     public boolean isKeyVisible(int midiNote) {
         return midiNote >= getFirstNote() && midiNote <= getLastNote();
+    }
+
+    public void onKey(int note, boolean on) {
+        Key key = findKeyByNote(note);
+        if (key != null) {
+            key.setPressed(on);
+            repaint();
+        }
     }
 
 }
