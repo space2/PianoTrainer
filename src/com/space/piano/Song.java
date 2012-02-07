@@ -85,6 +85,7 @@ public class Song {
 
         // Adjust node boundaries, so there will be a bit of gap between notes
         for (Vector<Note> notes : mNotesPerNote.values()) {
+            Collections.sort(notes, new NoteComparator());
             int size = notes.size();
             for (int i = 0; i < size - 1; i++) {
                 Note cur = notes.get(i);
@@ -118,30 +119,8 @@ public class Song {
     }
 
     private void sort() {
-        Collections.sort(mNotes, new Comparator<Note>() {
-            @Override
-            public int compare(Note o1, Note o2) {
-                if (o1.getOnTime() < o2.getOnTime()) {
-                    return -1;
-                }
-                if (o1.getOnTime() > o2.getOnTime()) {
-                    return +1;
-                }
-                return 0;
-            }
-        });
-        Collections.sort(mNoteEvents, new Comparator<NoteEvent>() {
-            @Override
-            public int compare(NoteEvent o1, NoteEvent o2) {
-                if (o1.getTime() < o2.getTime()) {
-                    return -1;
-                }
-                if (o1.getTime() > o2.getTime()) {
-                    return +1;
-                }
-                return 0;
-            }
-        });
+        Collections.sort(mNotes, new NoteComparator());
+        Collections.sort(mNoteEvents, new NoteEventComparator());
     }
 
     public int getNoteEventCount() {
@@ -155,5 +134,31 @@ public class Song {
     @Override
     public String toString() {
         return mTitle;
+    }
+
+    class NoteComparator implements Comparator<Note> {
+        @Override
+        public int compare(Note o1, Note o2) {
+            if (o1.getOnTime() < o2.getOnTime()) {
+                return -1;
+            }
+            if (o1.getOnTime() > o2.getOnTime()) {
+                return +1;
+            }
+            return 0;
+        }
+    }
+
+    class NoteEventComparator implements Comparator<NoteEvent> {
+        @Override
+        public int compare(NoteEvent o1, NoteEvent o2) {
+            if (o1.getTime() < o2.getTime()) {
+                return -1;
+            }
+            if (o1.getTime() > o2.getTime()) {
+                return +1;
+            }
+            return 0;
+        }
     }
 }
