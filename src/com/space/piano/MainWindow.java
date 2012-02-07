@@ -52,6 +52,7 @@ public class MainWindow extends JFrame implements ActionListener {
             mSongChooser.addItem(mSongLib.get(i));
         }
         mSongChooser.addActionListener(this);
+        mSongChooser.setFocusable(false);
 
         mScoreView = new JLabel();
         header.add(mScoreView);
