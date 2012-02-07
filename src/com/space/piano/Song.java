@@ -1,10 +1,12 @@
 package com.space.piano;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Vector;
 
+import javax.sound.midi.MetaMessage;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.Sequence;
@@ -21,6 +23,7 @@ public class Song {
     private Vector<NoteEvent> mNoteEvents = new Vector<NoteEvent>();
     private HashMap<Integer, Vector<Note>> mNotesPerNote = new HashMap<Integer, Vector<Note>>();
     private int mLength;
+    private String mTitle;
 
     public Song(Sequence seq) {
         int usPerTick = (int) (seq.getMicrosecondLength() / seq.getTickLength());
@@ -34,7 +37,16 @@ public class Song {
                 MidiEvent event = track.get(j);
                 int tm = (int) (event.getTick() * usPerTick / 1000);
                 MidiMessage msg = event.getMessage();
-                if (msg instanceof ShortMessage) {
+                if (msg instanceof MetaMessage) {
+                    MetaMessage mmsg = (MetaMessage) msg;
+                    if (mmsg.getType() == 8) {
+                        try {
+                            mTitle = new String(mmsg.getMessage(), "iso8859-1");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else if (msg instanceof ShortMessage) {
                     ShortMessage smsg = (ShortMessage) msg;
                     if (smsg.getCommand() == ShortMessage.NOTE_ON) {
                         int midiNote = smsg.getData1();
@@ -140,4 +152,8 @@ public class Song {
         return mNoteEvents.get(idx);
     }
 
+    @Override
+    public String toString() {
+        return mTitle;
+    }
 }

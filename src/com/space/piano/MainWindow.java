@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,10 +19,14 @@ public class MainWindow extends JFrame implements ActionListener {
     private SongView mSongView;
     private JLabel mScoreView;
     private JButton mBtnRestart;
+    private SongLibrary mSongLib;
+    private JComboBox mSongChooser;
 
     public MainWindow(App app) {
         super("Piano");
         mApp = app;
+
+        mSongLib = app.getSongLib();
 
         JPanel root = new JPanel(new BorderLayout());
         setContentPane(root);
@@ -41,16 +46,26 @@ public class MainWindow extends JFrame implements ActionListener {
         mBtnRestart.setFocusable(false);
         header.add(mBtnRestart);
 
+        mSongChooser = new JComboBox();
+        header.add(mSongChooser);
+        for (int i = 0; i < mSongLib.getCount(); i++) {
+            mSongChooser.addItem(mSongLib.get(i));
+        }
+        mSongChooser.addActionListener(this);
+
         mScoreView = new JLabel();
         header.add(mScoreView);
 
         setSize(1024, 768);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        selectSong(0);
     }
 
     public void setSong(Song song) {
         mSongView.setSong(song);
+        mApp.restart();
     }
 
     public SongView getSongView() {
@@ -70,6 +85,16 @@ public class MainWindow extends JFrame implements ActionListener {
         Object src = event.getSource();
         if (src == mBtnRestart) {
             mApp.restart();
+            return;
         }
+        if (src == mSongChooser) {
+            selectSong(mSongChooser.getSelectedIndex());
+            return;
+        }
+    }
+
+    private void selectSong(int idx) {
+        Song song = mSongLib.get(idx);
+        setSong(song);
     }
 }

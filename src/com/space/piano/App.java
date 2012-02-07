@@ -4,7 +4,6 @@ import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiDevice.Info;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Receiver;
-import javax.sound.midi.Sequence;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Transmitter;
@@ -18,9 +17,9 @@ public class App {
     private Game mGame;
     private MidiDevice mMidiDev;
     private Transmitter mMidiTrans;
+    private SongLibrary mSongLib;
 
     public App(String[] args) {
-        mWin = new MainWindow(this);
 
         try {
             // Initialize midi
@@ -29,10 +28,8 @@ public class App {
             mMsg = new ShortMessage();
             mSynthRcvr = mSynth.getReceiver();
 
-            // Load tutorial song
-            Sequence seq = MidiSystem.getSequence(getClass().getResourceAsStream("/JingleBells.mid"));
-            Song song = new Song(seq);
-            mWin.setSong(song);
+            // Load tutorial songs
+            mSongLib = new SongLibrary("/list");
 
             // Detect Midi keyboard
             try {
@@ -54,6 +51,9 @@ public class App {
             } catch (Throwable t) {
                 t.printStackTrace();
             }
+
+            // Create window
+            mWin = new MainWindow(this);
 
             // Start game
             mGame = new EasyGame(this);
@@ -95,7 +95,13 @@ public class App {
     }
 
     public void restart() {
-        mGame.restart();
+        if (mGame != null) {
+            mGame.restart();
+        }
+    }
+
+    public SongLibrary getSongLib() {
+        return mSongLib;
     }
 
 }
