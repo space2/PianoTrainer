@@ -41,7 +41,7 @@ public class Song {
                     MetaMessage mmsg = (MetaMessage) msg;
                     if (mmsg.getType() == 8) {
                         try {
-                            mTitle = new String(mmsg.getMessage(), "iso8859-1");
+                            mTitle = new String(mmsg.getData(), "iso8859-1");
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
